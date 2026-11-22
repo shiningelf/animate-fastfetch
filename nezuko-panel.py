@@ -77,6 +77,15 @@ def fit(s,n):
 def trim(s,n):
     return fit(s,n).rstrip()
 
+def clip(s,n):
+    s=str(s).replace("\n"," ")
+    out=""
+    for c in s:
+        if width(out+c)>n:
+            return out+"…" if width(out+"…")<=n else out
+        out+=c
+    return out
+
 def border_line(left, mid, right, width, color):
     return color+left+mid*width+right+COL['reset']
 
@@ -119,10 +128,6 @@ def active_wifi_device():
         fields=row.split(":",2)
         if len(fields)==3 and fields[1].lower() in ("wifi","wireless") and fields[2].lower().startswith("connected"):
             return fields[0]
-    for name in ("/sys/class/net/wlp6s0",):
-        if Path(name).exists(): return Path(name).name
-    for d in sorted(Path("/sys/class/net").glob("wl*")):
-        return d.name
     return ""
 
 def active_wifi_ssid(device=""):
@@ -152,10 +157,6 @@ def device_ipv4(device):
     out=run_text(["ip","-o","-4","addr","show","dev",device,"scope","global"])
     m=re.search(r"\binet\s+(\d+\.\d+\.\d+\.\d+/\d+)",out)
     if m: return m.group(1)
-    if isinstance(local,dict):
-        for entry in local.get("ipv4",[]) or []:
-            if isinstance(entry,dict) and entry.get("address"):
-                return entry["address"]+(f"/{entry['prefix']}" if entry.get('prefix') else "")
     return "Unavailable"
 
 def device_gateway(device):
@@ -171,8 +172,8 @@ eth_device=active_ethernet_device()
 ssid=active_wifi_ssid(wifi_device)
 wifi_ip=device_ipv4(wifi_device)
 wifi_gateway=device_gateway(wifi_device)
-lan_ip=device_ipv4(eth_device) if eth_device else wifi_ip
-lan_gateway=device_gateway(eth_device) if eth_device else wifi_gateway
+lan_ip=device_ipv4(eth_device) if eth_device else ""
+lan_gateway=device_gateway(eth_device) if eth_device else ""
 
 # Right content is 88 terminal cells wide: 40 SYSTEM + 46 HARDWARE + 2 gap.
 W=80; SW=36; HW=42
@@ -202,18 +203,46 @@ for i in range(rows):
             r=COL['pink']+"│"+COL['reset']+"  "+valstr+" "*(HW-20)+COL['pink']+"│"+COL['reset']
     out.append(l+"  "+r)
 out.append(border_line("╰","─","╯",SW-2,COL['green'])+"  "+border_line("╰","─","╯",HW-2,COL['pink']))
-# 神経: Wireless (Wi-Fi) and Wired (Ethernet), aligned IP and router rows.
-net_left=38; net_right=39
+# 神経: show only active interfaces, with one compact line per connection.
 out.append(titled_border(W,"神経",COL['blue']))
-def network_cell(label,value,n,bold=False):
-    label_width=min(width(label),n)
-    style=COL['blue']+(COL['bold'] if bold else "")
-    return style+fit(label,label_width)+COL['reset']+COL['text']+fit(value,n-label_width)+COL['reset']
-out.append(COL['blue']+"│"+COL['reset']+network_cell("󰖩 Wireless ",ssid,net_left,True)+COL['blue']+"│"+COL['reset']+network_cell("󰈀 Wired","",net_right,True)+COL['blue']+"│"+COL['reset'])
-def network_row(left_label,left_value,right_label="",right_value=""):
-    return COL['blue']+"│"+COL['reset']+network_cell(left_label,left_value,net_left)+COL['blue']+"│"+COL['reset']+network_cell(right_label,right_value,net_right)+COL['blue']+"│"+COL['reset']
-out.append(network_row("󰩟 IP: ",wifi_ip,"󰩟 IP: ",lan_ip))
-out.append(network_row("󰑩 Router: ",wifi_gateway,"󰑩 Router: ",lan_gateway))
+def network_line(parts):
+    inner=W-2
+    used=0
+    line=COL['blue']+"│"+COL['reset']
+    for text,color in parts:
+        room=inner-used
+        if room<=0: break
+        piece=clip(text,room)
+        line+=color+piece+COL['reset']
+        piece_width=width(piece)
+        used+=piece_width
+        if piece_width<width(text):
+            break
+    line+=" "*(inner-used)+COL['blue']+"│"+COL['reset']
+    out.append(line)
+network_items=[]
+if wifi_device:
+    network_items.append([
+        ("󰖩 Wireless:",COL['blue']+COL['bold']),
+        (" SSID "+ssid+" /",COL['text']),
+        ("󰩠 IP ",COL['blue']),
+        (wifi_ip+"/",COL['text']),
+        ("󰑩 Router: ",COL['blue']),
+        (wifi_gateway,COL['text']),
+    ])
+if eth_device:
+    network_items.append([
+        ("󰈀 Wired:",COL['blue']+COL['bold']),
+        ("/󰩠 IP ",COL['blue']),
+        (lan_ip+"/",COL['text']),
+        ("󰑩 Router: ",COL['blue']),
+        (lan_gateway,COL['text']),
+    ])
+if network_items:
+    for item in network_items:
+        network_line(item)
+else:
+    network_line([("No active network connection",COL['text'])])
 out.append(border_line("╰","─","╯",W-2,COL['blue']))
 # Unframed, five-row ASCII NEZUKO title; the small PNG stays beside it.
 logo=HERE/"kimetsunoyaiba-footer.png"
