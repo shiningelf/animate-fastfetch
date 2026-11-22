@@ -8,7 +8,7 @@ ESC = "\x1b["
 COL = {
     "pink": "\x1b[38;2;255;46;166m", "pink2": "\x1b[38;2;255;46;166m",
     "green": "\x1b[38;2;0;245;212m", "blue": "\x1b[38;2;0;217;255m",
-    "muted": "\x1b[38;2;118;128;151m", "text": "\x1b[38;2;220;224;236m",
+    "muted": "\x1b[38;2;118;128;151m", "text": "\x1b[38;2;220;224;236m", "ssid_bg": "\x1b[48;2;0;70;72m",
     "red": "\x1b[38;2;226;49;75m", "reset": "\x1b[0m", "bold": "\x1b[1m"
 }
 
@@ -224,18 +224,20 @@ network_items=[]
 if wifi_device:
     network_items.append([
         ("󰖩 Wireless:",COL['blue']+COL['bold']),
-        (" SSID "+ssid+" /",COL['text']),
-        ("󰩠 IP ",COL['blue']),
-        (wifi_ip+"/",COL['text']),
-        ("󰑩 Router: ",COL['blue']),
+        (" ",COL['text']),
+        (ssid,COL['ssid_bg']+COL['text']),
+        (" / ",COL['text']),
+        ("󰩠 ",COL['blue']),
+        (wifi_ip+" / ",COL['text']),
+        ("󰑩 ",COL['blue']),
         (wifi_gateway,COL['text']),
     ])
 if eth_device:
     network_items.append([
         ("󰈀 Wired:",COL['blue']+COL['bold']),
-        ("/󰩠 IP ",COL['blue']),
-        (lan_ip+"/",COL['text']),
-        ("󰑩 Router: ",COL['blue']),
+        ("/ 󰩠 ",COL['blue']),
+        (lan_ip+" / ",COL['text']),
+        ("󰑩 ",COL['blue']),
         (lan_gateway,COL['text']),
     ])
 if network_items:
