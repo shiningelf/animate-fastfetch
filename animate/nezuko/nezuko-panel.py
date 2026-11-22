@@ -270,4 +270,5 @@ for i,row in enumerate(word_rows):
     out.append(image+ESC+"8C"+COL['bold']+COL['pink2']+row+COL['reset']+" "*(W-55))
 out.append("")
 out.append(COL['muted']+"  ● "+COL['pink']+"● "+COL['text']+"● "+COL['green']+"● "+"\x1b[38;2;231;125;104m● "+COL['blue']+"●"+COL['reset'])
+out.insert(0, "")  # Reserve one blank line above the fetch output.
 print("\n".join("\r"+ESC+"40C"+line for line in out))

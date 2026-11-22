@@ -1,0 +1,42 @@
+{
+  "logo": "none",
+  "modules": [
+    {
+      "type": "os"
+    },
+    {
+      "type": "kernel"
+    },
+    {
+      "type": "de"
+    },
+    {
+      "type": "shell"
+    },
+    {
+      "type": "uptime"
+    },
+    {
+      "type": "cpu"
+    },
+    {
+      "type": "gpu"
+    },
+    {
+      "type": "memory"
+    },
+    {
+      "type": "swap"
+    },
+    {
+      "type": "disk",
+      "folders": "/"
+    },
+    {
+      "type": "wifi"
+    },
+    {
+      "type": "localip"
+    }
+  ]
+}

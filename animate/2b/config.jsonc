@@ -1,39 +1,27 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
-    "type": "none"
+    "type": "kitty",
+    "source": "~/.config/fastfetch/animate/2b/2b.png",
+    "printRemaining": false,
+    "width": 28,
+    "height": 25,
+    "position": "left",
+    "padding": {
+      "right": 2
+    }
   },
   "display": {
-    "separator": "  ",
+    "separator": "",
     "key": {
-      "width": 14
+      "width": 0
     }
   },
   "modules": [
     {
-      "type": "custom",
-      "format": "\u001b[38;2;220;220;220m╭─ POD 042 // SCAN COMPLETE ─────────────────────────╮\u001b[0m"
-    },
-    {
-      "type": "custom",
-      "format": "\u001b[38;2;150;150;150m│ TARGET: LOCAL MACHINE          SIGNAL: STABLE     │\u001b[0m"
-    },
-    {
-      "type": "custom",
-      "format": "\u001b[38;2;220;220;220m╰────────────────────────────────────────────────────╯\u001b[0m"
-    },
-    {"type": "os", "key": "IDENTITY"},
-    {"type": "kernel", "key": "SYSTEM"},
-    {"type": "de", "key": "INTERFACE"},
-    {"type": "shell", "key": "SHELL"},
-    {"type": "uptime", "key": "UPTIME"},
-    {"type": "cpu", "key": "PROCESSOR"},
-    {"type": "memory", "key": "MEMORY"},
-    {"type": "disk", "key": "STORAGE", "folders": "/"},
-    {"type": "localip", "key": "NETWORK"},
-    {
-      "type": "custom",
-      "format": "\u001b[38;2;220;220;220mPOD LINK: ONLINE  //  GLORY TO MANKIND\u001b[0m"
+      "type": "command",
+      "key": "\u001b[2K",
+      "text": "python3 ~/.config/fastfetch/animate/2b/pod-panel.py"
     }
   ]
 }

@@ -10,6 +10,13 @@ cd animate-fastfetch
 ./install.sh
 ```
 
+`install.sh` is a convenience script that copies both character folders into `~/.config/fastfetch/animate/`. You can also install them manually from the repository root:
+
+```sh
+mkdir -p ~/.config/fastfetch/animate
+cp -R animate/nezuko animate/2b ~/.config/fastfetch/animate/
+```
+
 Choose a character by passing its config file:
 
 ```sh
@@ -23,16 +30,28 @@ fastfetch --config ~/.config/fastfetch/animate/2b/config.jsonc
 ./install.sh /path/to/fastfetch/animate
 ```
 
+## zsh startup and cursor
+
+If Fastfetch hides the terminal cursor after it runs, append `printf '\e[?25h'` to the command in `~/.zshrc` to show it again:
+
+```sh
+fastfetch --config /home/shiningelf/.config/fastfetch/animate/2b/config.jsonc ; printf '\e[?25h'
+```
+
+Replace the config path with the character you want to show at startup.
+
 ## Characters
 
 ### Nezuko
 
 A custom two-column panel with a transparent portrait, Japanese quote, system and hardware cards, live network details, and a Demon Slayer footer mark.
 
-![Nezuko theme snapshot](animate/nezuko/snapshot.png)
+![Nezuko theme snapshot](animate/nezuko/screenshot.png)
 
 Requires Fastfetch 2.69+, Python 3, a Nerd Font, a Kitty graphics capable terminal, NetworkManager (`nmcli`), and `ip`.
 
 ### 2B
 
-A POD 042 scan console layout with machine identity, system, processor, memory, storage, and network fields. This starter config uses Fastfetch's text modules and does not require character artwork.
+A POD 042 scan console layout with a transparent 2B portrait on the left and color-coded system identification, tactical unit, black box memory, storage archive, and network signal sections on the right. Memory and disk usage use colored bars; the panel also shows GPU, live `user@hostname`, the connected Wi-Fi SSID and only the active wireless and wired IPv4 rows. The portrait uses Kitty graphics protocol, so use a compatible terminal.
+
+![2B theme snapshot](animate/2b/screenshot.png)
