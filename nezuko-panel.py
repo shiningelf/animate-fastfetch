@@ -83,8 +83,8 @@ def border_line(left, mid, right, width, color):
 def titled_border(total_width, title, color):
     label=" "+title+" "
     remaining=max(0,total_width-2-width(label))
-    left=remaining//2
-    right=remaining-left
+    left=0
+    right=remaining
     return color+"╭"+"─"*left+COL['bold']+label+COL['reset']+color+"─"*right+"╮"+COL['reset']
 
 def content(left, right, total_width, lc, rc, leftw):
@@ -205,13 +205,13 @@ out.append(border_line("╰","─","╯",SW-2,COL['green'])+"  "+border_line("�
 # 神経: Wireless (Wi-Fi) and Wired (Ethernet), aligned IP and router rows.
 net_left=38; net_right=39
 out.append(titled_border(W,"神経",COL['blue']))
-out.append(COL['blue']+"│"+COL['reset']+COL['blue']+COL['bold']+fit("󰖩 Wireless",net_left)+COL['blue']+"│"+COL['bold']+fit("󰈀 Wired",net_right)+COL['blue']+"│"+COL['reset'])
-def network_cell(label,value,n):
+def network_cell(label,value,n,bold=False):
     label_width=min(width(label),n)
-    return COL['blue']+fit(label,label_width)+COL['reset']+COL['text']+fit(value,n-label_width)+COL['reset']
+    style=COL['blue']+(COL['bold'] if bold else "")
+    return style+fit(label,label_width)+COL['reset']+COL['text']+fit(value,n-label_width)+COL['reset']
+out.append(COL['blue']+"│"+COL['reset']+network_cell("󰖩 Wireless ",ssid,net_left,True)+COL['blue']+"│"+COL['reset']+network_cell("󰈀 Wired","",net_right,True)+COL['blue']+"│"+COL['reset'])
 def network_row(left_label,left_value,right_label="",right_value=""):
     return COL['blue']+"│"+COL['reset']+network_cell(left_label,left_value,net_left)+COL['blue']+"│"+COL['reset']+network_cell(right_label,right_value,net_right)+COL['blue']+"│"+COL['reset']
-out.append(network_row("󰖩 WiFi: ",ssid))
 out.append(network_row("󰩟 IP: ",wifi_ip,"󰩟 IP: ",lan_ip))
 out.append(network_row("󰑩 Router: ",wifi_gateway,"󰑩 Router: ",lan_gateway))
 out.append(border_line("╰","─","╯",W-2,COL['blue']))
