@@ -2,7 +2,7 @@
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
     "type": "kitty",
-    "source": "~/.config/fastfetch/nezuko-transparent.png",
+    "source": "~/.config/fastfetch/animate/nezuko/nezuko-transparent.png",
     "width": 38,
     "printRemaining": false,
     "position": "left",
@@ -16,7 +16,7 @@
     {
       "type": "command",
       "key": "\u001b[2K",
-      "text": "python3 ~/.config/fastfetch/nezuko-panel.py"
+      "text": "python3 ~/.config/fastfetch/animate/nezuko/nezuko-panel.py"
     }
   ]
 }
