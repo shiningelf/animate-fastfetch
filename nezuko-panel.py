@@ -80,6 +80,13 @@ def trim(s,n):
 def border_line(left, mid, right, width, color):
     return color+left+mid*width+right+COL['reset']
 
+def titled_border(total_width, title, color):
+    label=" "+title+" "
+    remaining=max(0,total_width-2-width(label))
+    left=remaining//2
+    right=remaining-left
+    return color+"╭"+"─"*left+COL['bold']+label+COL['reset']+color+"─"*right+"╮"+COL['reset']
+
 def content(left, right, total_width, lc, rc, leftw):
     inner_right=total_width-leftw-4
     right=trim(right,inner_right)
@@ -177,8 +184,7 @@ out += [COL['pink']+"╭"+"─"*(W-2)+"╮"+COL['reset'],
         COL['pink']+"│"+COL['reset']+"  "+COL['text']+quote+" "*max(0,W-4-width(quote))+COL['pink']+"│"+COL['reset'],
         COL['pink']+"╰"+"─"*(W-2)+"╯"+COL['reset']]
 # Info cards
-out.append(border_line("╭","─", "╮", SW-2,COL['green'])+"  "+border_line("╭","─","╮",HW-2,COL['pink']))
-out.append(COL['green']+"│ "+COL['bold']+"霊魂"+" "*(SW-3-width("霊魂"))+"│"+COL['reset']+"  "+COL['pink']+"│ "+COL['bold']+"義体"+" "*(HW-3-width("義体"))+"│"+COL['reset'])
+out.append(titled_border(SW,"霊魂",COL['green'])+"  "+titled_border(HW,"義体",COL['pink']))
 left_rows=[(os_icon+" OS",osval),(" KERNEL",kval),(" DE",dval),(" SHELL",sval),("󰔚 UPTIME",uval)]
 right_rows=[(" CPU",cpuname),(" MEMORY",f"{human(mem_used)} / {human(mem_total)}"),("󰓡 SWAP",f"{human(swap_used)} / {human(swap_total)}")] + [("󰢮 GPU",name) for name in gpu_names] + [("󰋊 DISK /",f"{human(disk_used)} / {human(disk_total)}")]
 rows=max(len(left_rows),len(right_rows))+2
@@ -196,17 +202,16 @@ for i in range(rows):
             r=COL['pink']+"│"+COL['reset']+"  "+valstr+" "*(HW-20)+COL['pink']+"│"+COL['reset']
     out.append(l+"  "+r)
 out.append(border_line("╰","─","╯",SW-2,COL['green'])+"  "+border_line("╰","─","╯",HW-2,COL['pink']))
-# 神経: WAN (Wi-Fi) and LAN (wired Ethernet), aligned IP and gateway rows.
+# 神経: Wireless (Wi-Fi) and Wired (Ethernet), aligned IP and router rows.
 net_left=38; net_right=39
-out.append(border_line("╭","─","╮",W-2,COL['blue']))
-out.append(COL['blue']+"│ "+COL['blue']+COL['bold']+"神経"+" "*(W-3-width("神経"))+"│"+COL['reset'])
-out.append(COL['blue']+"│"+COL['reset']+COL['blue']+COL['bold']+fit("󰖩 WAN",net_left)+COL['blue']+"│"+COL['bold']+fit("󰈀 LAN",net_right)+COL['blue']+"│"+COL['reset'])
+out.append(titled_border(W,"神経",COL['blue']))
+out.append(COL['blue']+"│"+COL['reset']+COL['blue']+COL['bold']+fit("󰖩 Wireless",net_left)+COL['blue']+"│"+COL['bold']+fit("󰈀 Wired",net_right)+COL['blue']+"│"+COL['reset'])
 def network_cell(label,value,n):
     label_width=min(width(label),n)
     return COL['blue']+fit(label,label_width)+COL['reset']+COL['text']+fit(value,n-label_width)+COL['reset']
 def network_row(left_label,left_value,right_label="",right_value=""):
     return COL['blue']+"│"+COL['reset']+network_cell(left_label,left_value,net_left)+COL['blue']+"│"+COL['reset']+network_cell(right_label,right_value,net_right)+COL['blue']+"│"+COL['reset']
-out.append(network_row("Name: ",ssid))
+out.append(network_row("󰖩 WiFi: ",ssid))
 out.append(network_row("󰩟 IP: ",wifi_ip,"󰩟 IP: ",lan_ip))
 out.append(network_row("󰑩 Router: ",wifi_gateway,"󰑩 Router: ",lan_gateway))
 out.append(border_line("╰","─","╯",W-2,COL['blue']))

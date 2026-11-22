@@ -1,6 +1,6 @@
 # Nezuko Fastfetch Layout
 
-A custom Fastfetch layout featuring a transparent Nezuko portrait, Japanese quote, system and hardware panels, live WAN/LAN details, and a Demon Slayer footer mark beside an ASCII `NEZUKO` wordmark.
+A custom Fastfetch layout featuring a transparent Nezuko portrait, Japanese quote, system and hardware panels, live wireless/wired network details, and a Demon Slayer footer mark beside an ASCII `NEZUKO` wordmark.
 
 ## Requirements
 
@@ -32,6 +32,6 @@ fastfetch --config ~/.config/fastfetch/nezuko-layout.jsonc
 
 The left side shows the transparent portrait. The right side contains the Japanese quote, system and hardware cards, and a network panel. The system card is 36 columns wide, the hardware card is 42 columns wide, and the quote and network panels are 80 columns wide.
 
-The system icon switches between Manjaro and Arch branding based on Fastfetch's OS data. GPU rows are generated from the detected devices. The network panel shows the Wi-Fi name and interface addresses and routers for WAN and LAN; public IP is omitted.
+The system icon switches between Manjaro and Arch branding based on Fastfetch's OS data. GPU rows are generated from the detected devices. The network panel shows the Wi-Fi name and interface addresses and routers for Wireless and Wired connections; public IP is omitted.
 
 The bottom has a small Demon Slayer PNG and a five-row `NEZUKO` wordmark made from terminal text. The footer image uses Kitty graphics at 6 columns by 3 rows. Memory and disk values are shown without usage bars.
