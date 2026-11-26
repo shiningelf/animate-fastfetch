@@ -70,3 +70,5 @@ Keep `width: 28` and `height: 25` to preserve the current layout footprint. Then
 ### Muichiro Tokito
 
 A mist themed Hashira console with a transparent Muichiro portrait, rounded color-backed information pills, flowing mist dividers, live system and hardware details, and a Mist Breathing footer. RAM and disk bars show the used fraction in mint through 50%, yellow from 50% to 80%, and orange-red above 80%, with the unused fraction in light mint; swap is shown separately. The panel reads the active Wi-Fi SSID and wired IPv4/router details. The portrait uses Kitty graphics protocol, so use a compatible terminal and Nerd Font.
+
+![Muichiro theme snapshot](animate/muichiro/screenshot.png)
